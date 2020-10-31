@@ -6,6 +6,8 @@
 #include<iostream>
 #include<time.h>
 #include<stdlib.h>
+#include<string.h>
+#include<cmath>
 
 using namespace std;
 
@@ -43,13 +45,14 @@ int main(int argc, char* argv[]){
 }
 
 int simulation(){
-  int n=0, w=0;
-  int c=3;
+  unsigned long long int n=0;
+  int c=3, w=0;
   srand(time(NULL));
-  cout<<"\n\tQuante volte vuoi far girare la simulazione? ";
+  cout<<"\n\tQuante volte vuoi far girare la simulazione (Max = 18446744073709551614)? ";
   cin>>n;
-  do{
-    cout<<"\n\n\tCosa vuoi simulare?\n\t1.Cambia sempre;\n\t2.Mantieni sempre la risposta\n\t3.Sia l'uno che l'altro random\n\tScelta: ";
+  n++;
+  do {  
+	cout<<"\n\n\tCosa vuoi simulare?\n\t1.Cambia sempre;\n\t2.Mantieni sempre la risposta\n\t3.Sia l'uno che l'altro random\n\tScelta: ";
     cin>>c;
   } while(c<1 || c>3);
   switch(c){
@@ -97,34 +100,39 @@ void tutorial(){
   cout<<"\tIl giocatore sceglie una porta. Il computer apre una delle due restanti\n\tdove sicuramente c'e' una capra e dice:\n";
   cout<<"\t\"Vuoi cambiare la tua scelta?\"\n";
   cout<<"\tSi verificano cosi' quattro situazioni: \n\til giocatore cambia la porta ma quella che aveva scelto all'inizio era vincente di conseguenza perde;\n\t";
-  cout<<"il giocarore cambia la porta e dato che quella che aveva scelto all'inizio era perdente vince il gioco\n\t";
-  cout<<"il giocarore non cambia la porta e dato che quella che aveva scelto all'inizio era perdente, perde il gioco\n\t";
-  cout<<"il giocarore non cambia la porta e dato che quella che aveva scelto all'inizio era vincente, vince il gioco\n\n\n";
+  cout<<"il giocarore cambia la porta e dato che quella che aveva scelto all'inizio era perdente vince il gioco;\n\t";
+  cout<<"il giocarore non cambia la porta e dato che quella che aveva scelto all'inizio era perdente, perde il gioco;\n\t";
+  cout<<"il giocarore non cambia la porta e dato che quella che aveva scelto all'inizio era vincente, vince il gioco.\n\n\n";
 }
 
 int play(){
   srand(time(NULL));
-  int car=rand()%3;
+  int car=(rand()%3)+1;
   int scelta;
+  char* x;
   char s;
   do{
-  cout<<"\n\n\t\t+-------+\t+--------+\t+--------+\n\t\t|        |\t|        |\t|        |\n\t\t|        |\t|        |\t|        |\n\t\t|   0    |\t|   1    |\t|   2    |\n\t\t|        |\t|        |\t|        |\n\t\t|        |\t|        |\t|        |\n\t\t|        |\t|        |\t|        |\n\t\t+--------+\t+--------+\t+--------+\n\n\n";
-  cout<<"\tScegli una porta (scegli tra 0,1 o 2): ";
-  cin>>scelta;
-  } while(scelta<0 || scelta>2);
+  cout<<"\n\n\t\t+--------+\t+--------+\t+--------+\n\t\t|        |\t|        |\t|        |\n\t\t|        |\t|        |\t|        |\n\t\t|   1    |\t|   2    |\t|   3    |\n\t\t|        |\t|        |\t|        |\n\t\t|        |\t|        |\t|        |\n\t\t|        |\t|        |\t|        |\n\t\t+--------+\t+--------+\t+--------+\n\n\n";
+  cout<<"\tScegli una porta (scegli tra 1,2 o 3): ";
+  cin>>x;
+  scelta=atoi(x);
+  } while(scelta<1 || scelta>3);
   int porta=perdente(scelta, car);
-  cout<<"\tApro la porta "<<porta<<", che e' perdente, vuoi cambiare la tua scelta? (s/n)\n\t";
-  cin>>s;
+  cout<<"\n\tHai scelto: "<<scelta<<"\n\n";
+  do{
+    cout<<"\tApro la porta "<<porta<<", che e' perdente, vuoi cambiare la tua scelta? (s/n)\n\t";
+    cin>>s;
+  } while(s!='s' && s!='n');
   if(s=='s'){
     if(scelta!=car)
       cout<<endl<<"\tHai vinto"<<endl;
     else
-      cout<<endl<<"\tHai perso, la porta vincente era la porta "<<car<<endl;
+      cout<<endl<<"\tHai perso, la porta vincente era la numero "<<car<<endl;
   } else{
     if(scelta==car)
       cout<<endl<<"\tHai vinto"<<endl;
     else
-      cout<<endl<<"\tHai perso, la porta vincente era la porta "<<car<<endl;
+      cout<<endl<<"\tHai perso, la porta vincente era la numero "<<car<<endl;
   }
   return 0;
 }
@@ -132,45 +140,45 @@ int play(){
 int perdente(int scelta, int vincente){
   if(scelta==vincente){
     switch(scelta){
-     case 0:
+     case 1:
         if(rand()%2)
-          return 1;
-        else
           return 2;
-        break;
-      case 1:
-        if(rand()%2)
-          return 0;
         else
-          return 2;
+          return 3;
         break;
       case 2:
         if(rand()%2)
-          return 0;
-        else
           return 1;
+        else
+          return 3;
+        break;
+      case 3:
+        if(rand()%2)
+          return 1;
+        else
+          return 2;
         break;
     }
   }
   else{
     switch(scelta){
-      case 0:
-        if(vincente==1)
-          return 2;
-        else
-          return 1;
-        break;
       case 1:
         if(vincente==2)
-          return 0;
+          return 3;
         else
           return 2;
         break;
       case 2:
-        if(vincente==0)
+        if(vincente==3)
           return 1;
         else
-          return 0;
+          return 3;
+        break;
+      case 3:
+        if(vincente==1)
+          return 2;
+        else
+          return 1;
         break;
     }
   }
