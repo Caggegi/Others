@@ -1,0 +1,26 @@
+body{
+    margin: 0px;
+}
+nav{
+    background-color: aquamarine;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    align-content: space-between;
+}
+section{
+    background-color: green;
+    flex-grow: 1;
+}
+footer{
+    background-color: brown;
+    height: 48px;
+    width: 90%;
+    position:fixed;
+    margin-bottom: 0px;
+}
+nav div{
+    display: inline-block;
+    margin: 10px;
+    background-color: aqua;
+}
